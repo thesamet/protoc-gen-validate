@@ -13,15 +13,15 @@ import (
 	"github.com/golang/protobuf/ptypes"
 )
 
-func Work(wg *sync.WaitGroup, in <-chan TestCase, out chan<- TestResult, goFlag bool, gogoFlag bool, ccFlag bool, javaFlag bool, pythonFlag bool, externalFlag string) {
+func Work(wg *sync.WaitGroup, in <-chan TestCase, out chan<- TestResult, harnesses []Harness) {
 	for tc := range in {
-		ok, skip := execTestCase(tc, goFlag, gogoFlag, ccFlag, javaFlag, pythonFlag, externalFlag)
+		ok, skip := execTestCase(tc, harnesses)
 		out <- TestResult{ok, skip}
 	}
 	wg.Done()
 }
 
-func execTestCase(tc TestCase, goFlag bool, gogoFlag bool, ccFlag bool, javaFlag bool, pythonFlag bool, externalFlag string) (ok, skip bool) {
+func execTestCase(tc TestCase, harnesses []Harness) (ok, skip bool) {
 	any, err := ptypes.MarshalAny(tc.Message)
 	if err != nil {
 		log.Printf("unable to convert test case %q to Any - %v", tc.Name, err)
@@ -36,8 +36,6 @@ func execTestCase(tc TestCase, goFlag bool, gogoFlag bool, ccFlag bool, javaFlag
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 	defer cancel()
-
-	harnesses := Harnesses(goFlag, gogoFlag, ccFlag, javaFlag, pythonFlag, externalFlag)
 
 	wg := new(sync.WaitGroup)
 	wg.Add(len(harnesses))
