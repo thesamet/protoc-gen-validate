@@ -12,12 +12,12 @@ import (
 
 	"strings"
 
-	"github.com/golang/protobuf/proto"
 	harness "github.com/envoyproxy/protoc-gen-validate/tests/harness/go"
+	"github.com/golang/protobuf/proto"
 	"golang.org/x/net/context"
 )
 
-func Harnesses(goFlag bool, gogoFlag bool, ccFlag bool, javaFlag bool, pythonFlag bool, externalFlag string) []Harness {
+func Harnesses(goFlag bool, gogoFlag bool, ccFlag bool, javaFlag bool, pythonFlag bool, externalHarnessFlag string) []Harness {
 	harnesses := make([]Harness, 0)
 	if goFlag {
 		harnesses = append(harnesses, InitHarness("tests/harness/go/main/go-harness"))
@@ -34,8 +34,8 @@ func Harnesses(goFlag bool, gogoFlag bool, ccFlag bool, javaFlag bool, pythonFla
 	if pythonFlag {
 		harnesses = append(harnesses, InitHarness("tests/harness/python/python-harness"))
 	}
-	if externalFlag != "" {
-		harnesses = append(harnesses, InitHarness(externalFlag))
+	if externalHarnessFlag != "" {
+		harnesses = append(harnesses, InitHarness(externalHarnessFlag))
 	}
 	return harnesses
 }
