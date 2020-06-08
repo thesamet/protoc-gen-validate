@@ -21,7 +21,7 @@ func main() {
 	ccFlag := flag.Bool("cc", false, "Run c++ test harness")
 	javaFlag := flag.Bool("java", false, "Run java test harness")
 	pythonFlag := flag.Bool("python", false, "Run python test harness")
-	externalHarnessFlag := flag.String("external_harness", "", "Run an external test harness through the given executable")
+	externalHarnessFlag := flag.String("external_harness", "", "Path to a binary to be executed as an external test harness")
 	flag.Parse()
 
 	start := time.Now()
