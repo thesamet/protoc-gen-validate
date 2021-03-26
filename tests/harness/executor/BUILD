@@ -41,12 +41,7 @@ go_binary(
             "//tests/harness/python:python-harness",
         ],
     }),
-    gc_linkopts = [
-            "-linkmode",
-            "external",
-            "-extldflags",
-            "-static",
-    ],
+    static = "on",
     embed = [":go_default_library"],
     importpath = "github.com/envoyproxy/protoc-gen-validate/tests/harness/executor",
     visibility = ["//visibility:private"],
